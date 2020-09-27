@@ -1,0 +1,16 @@
+{
+    "name": "kesteos/mvc",
+    "require": {},
+
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "System\\": "system/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}
