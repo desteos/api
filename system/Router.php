@@ -19,10 +19,16 @@ class Router
     public function handle()
     {
         foreach ($this->routes as $route => $endpoint) {
-            list($method, $path) = explode('|', $route, 2);
+            list($method, $uriPattern) = explode('|', $route, 2);
 
-            if($this->uri === $path && $this->type === $method){
-                list($controller, $action) = explode('@', $endpoint, 2);
+            if(preg_match("~^$uriPattern\z~", $this->uri) && $this->type === $method){
+                $endpoint = preg_replace("~$uriPattern~", $endpoint, $this->uri);
+                $parts    = explode('/', $endpoint);
+
+                $controller = array_shift($parts);
+                $action     = array_shift($parts);
+
+                $params = $parts;
 
                 $controllerFile = $this->getControllerFilePath($controller);
 
@@ -32,8 +38,10 @@ class Router
                     $controller = $this->getControllerFullName($controller);
 
                     $instance = new $controller;
-                    $instance->$action();
+                    $instance->$action(...$params);
+
                     $this->routeFound = true;
+
                     break;
                 }
             }

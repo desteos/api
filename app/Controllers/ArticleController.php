@@ -8,13 +8,18 @@ class ArticleController
         echo 'list';
     }
 
-    public function show()
+    public function show($id)
     {
-        echo 'one article';
+        echo 'one article'.$id;
     }
 
     public function store()
     {
         echo 'store';
+    }
+
+    public function update()
+    {
+        echo 'update';
     }
 }
