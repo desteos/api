@@ -58,7 +58,6 @@ class Router
         return '\\App\\Controllers\\'.$controllerName;
     }
 
-
     private function getControllerFilePath($controllerName)
     {
         return __DIR__.'/../app/Controllers/'.$controllerName.'.php';

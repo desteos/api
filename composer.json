@@ -1,6 +1,8 @@
 {
     "name": "kesteos/mvc",
-    "require": {},
+    "require": {
+      "ext-pdo": "*"
+    },
 
     "autoload": {
         "psr-4": {
