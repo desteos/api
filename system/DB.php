@@ -7,7 +7,7 @@ class DB extends PDO
 {
     private $instance;
 
-    public function __construct()
+    public function __construct(DB $db = null)
     {
         $config = require '../config/db.php';
         $options = [
