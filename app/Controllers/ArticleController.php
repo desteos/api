@@ -2,19 +2,22 @@
 namespace App\Controllers;
 
 use App\Models\Article;
+use System\Response;
 
 class ArticleController
 {
     public function index()
     {
-        var_dump(Article::all());
+        $result = Article::all();
 
-        echo 'list';
+        echo Response::json($result);
     }
 
     public function show($id)
     {
-        echo 'show article '.$id;
+        $result = Article::find($id);
+
+        echo Response::json($result);
     }
 
     public function store()
@@ -22,8 +25,18 @@ class ArticleController
         echo 'store';
     }
 
-    public function update()
+    public function update($id)
     {
-        echo 'update';
+        echo 'update '.$id;
+    }
+
+    public function destroy($id)
+    {
+        echo 'destroy '.$id;
+    }
+
+    public function destroyAll()
+    {
+        echo 'destroy all';
     }
 }

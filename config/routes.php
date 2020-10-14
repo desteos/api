@@ -12,5 +12,5 @@ return [
 
     'DELETE|articles/([0-9]+)' => 'ArticleController/destroy/$1',
 
-    'DELETE|articles' => 'ArticleController/destroy',
+    'DELETE|articles' => 'ArticleController/destroyAll',
 ];
