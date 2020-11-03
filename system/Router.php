@@ -49,7 +49,7 @@ class Router
 
         if(!$this->routeFound){
             http_response_code(404);
-            die();
+            exit();
         }
     }
 

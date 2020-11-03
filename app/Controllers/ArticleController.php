@@ -10,14 +10,14 @@ class ArticleController
     {
         $result = Article::all();
 
-        echo Response::json($result);
+        Response::json($result);
     }
 
     public function show($id)
     {
         $result = Article::find($id);
 
-        echo Response::json($result);
+        Response::json($result);
     }
 
     public function store()
