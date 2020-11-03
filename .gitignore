@@ -2,3 +2,5 @@
 /vendor/
 /config/db.php
 /node_modules/
+/.run/
+.phpunit.result     
