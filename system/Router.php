@@ -3,32 +3,29 @@ namespace System;
 
 class Router
 {
-    private $uri;
-    private $type;
     private $routes;
     private $routeFound;
 
-    public function __construct()
+    public function __construct(array $routes)
     {
         $this->routeFound = false;
-        $this->routes = require '../config/routes.php';
-        $this->uri = trim($_SERVER['REQUEST_URI'], '/');
-        $this->type = $_SERVER['REQUEST_METHOD'];
+        $this->routes = $routes;
     }
 
-    public function handle()
+    public function handle(Request $request)
     {
         foreach ($this->routes as $route => $endpoint) {
             list($method, $uriPattern) = explode('|', $route, 2);
 
-            if(preg_match("~^$uriPattern\z~", $this->uri) && $this->type === $method){
-                $endpoint = preg_replace("~$uriPattern~", $endpoint, $this->uri);
+            if(preg_match("~^$uriPattern\z~", $request->uri) && $request->method === $method){
+                $endpoint = preg_replace("~$uriPattern~", $endpoint, $request->uri);
                 $parts    = explode('/', $endpoint);
 
                 $controller = array_shift($parts);
                 $action     = array_shift($parts);
 
                 $params = $parts;
+                $params[] = $request; //last params will be request
 
                 $controllerFile = $this->getControllerFilePath($controller);
 
@@ -48,8 +45,7 @@ class Router
         }
 
         if(!$this->routeFound){
-            http_response_code(404);
-            exit();
+            Response::json(array(),404);
         }
     }
 
