@@ -25,7 +25,7 @@ class Router
                 $action     = array_shift($parts);
 
                 $params = $parts;
-                $params[] = $request;
+                $params[] = $request; //last params will be request
 
                 $controllerFile = $this->getControllerFilePath($controller);
 
