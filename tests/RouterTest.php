@@ -13,12 +13,12 @@ class RouterTest extends TestCase
     protected function setUp(): void
     {
         $this->routes = [
-            'GET|articles/([0-9]+)' => 'ArticleController/show/$1',
-            'GET|articles' => 'ArticleController/index',
-            'PUT|articles/([0-9]+)' => 'ArticleController/update/$1',
-            'POST|articles' => 'ArticleController/store',
-            'DELETE|articles/([0-9]+)' => 'ArticleController/destroy/$1',
-            'DELETE|articles' => 'ArticleController/destroyAll',
+            'GET|tests/([0-9]+)' => 'TestController/show/$1',
+            'GET|tests' => 'TestController/index',
+            'PUT|tests/([0-9]+)' => 'TestController/update/$1',
+            'POST|tests' => 'TestController/store',
+            'DELETE|tests/([0-9]+)' => 'TestController/destroy/$1',
+            'DELETE|tests' => 'TestController/destroyAll',
         ];
     }
 
@@ -30,9 +30,6 @@ class RouterTest extends TestCase
 
     public function testHandle()
     {
-        $router = new Router($this->routes);
-        $router->handle();
-        //mock request
-        //assert
+
     }
 }

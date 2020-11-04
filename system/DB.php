@@ -21,7 +21,7 @@ class DB
             return self::$pdo;
         }
 
-        $config = require '../config/db.php';
+        $config = require_once '../config/db.php';
 
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
