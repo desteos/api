@@ -17,7 +17,9 @@ class Router
         foreach ($this->routes as $route => $endpoint) {
             list($method, $uriPattern) = explode('|', $route, 2);
 
-            if(preg_match("~^$uriPattern\z~", $request->uri) && $request->method === $method){
+            $requestUri = substr($request->uri, 0, strpos($request->uri, '?'));
+
+            if(preg_match("~^$uriPattern\z~", $requestUri) && $request->method === $method){
                 $endpoint = preg_replace("~$uriPattern~", $endpoint, $request->uri);
                 $parts    = explode('/', $endpoint);
 
