@@ -2,7 +2,8 @@
     "name": "kesteos/mvc",
     "require": {
       "ext-pdo": "*",
-      "ext-json": "*"
+      "ext-json": "*",
+        "mongodb/mongodb": "^1.6"
     },
 
     "autoload": {
