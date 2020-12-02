@@ -11,19 +11,12 @@ class AuthController
     public function login(Request $request)
     {
         if(User::checkCredentials($request->post)){
-//            $ew = setcookie('youpds', 'WE', [
-//                'expires' => strtotime('+1 day'),
-//                'path' => '/',
-//                'httponly' => true,
-//                'domain' => 'rest.test',
-//                'SameSite' => 'Strict',
-//            ]);
             Response::json([
-                'accessToken' => 'uin54qp98wrhuinj2q90ewh8p9ruib'
+                'accessToken' => 'uin54qp98wrhuinj2q90ewh8p9ruib' //todo auth
             ]);
         }
 
-        Response::json([], 422);
+        Response::json([], 422); //todo general error response with messages
     }
 
     public function logout()
