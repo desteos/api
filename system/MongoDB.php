@@ -11,7 +11,7 @@ class MongoDB
 
     public static function get()
     {
-        if(is_null(self::$config) || is_null(self::$db)){
+        if (is_null(self::$config) || is_null(self::$db)) {
             self::$config = require_once '../config/mongo_db.php';
             self::$db = new Mongo(self::$config['connection_string']);
         }

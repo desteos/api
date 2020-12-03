@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Models;
 
 use System\DB;
-use System\MongoDB;
 
 class Article
 {

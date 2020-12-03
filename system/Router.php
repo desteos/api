@@ -1,4 +1,5 @@
 <?php
+
 namespace System;
 
 class Router
@@ -17,19 +18,19 @@ class Router
         foreach ($this->routes as $route => $endpoint) {
             list($method, $uriPattern) = explode('|', $route, 2);
 
-            if(preg_match("~^$uriPattern\z~", $request->uri) && $request->method === $method){
+            if (preg_match("~^$uriPattern\z~", $request->uri) && $request->method === $method) {
                 $endpoint = preg_replace("~$uriPattern~", $endpoint, $request->uri);
-                $parts    = explode('/', $endpoint);
+                $parts = explode('/', $endpoint);
 
                 $controller = array_shift($parts);
-                $action     = array_shift($parts);
+                $action = array_shift($parts);
 
                 $params = $parts;
                 $params[] = $request; //last params will be request
 
                 $controllerFile = $this->getControllerFilePath($controller);
 
-                if(file_exists($controllerFile)){
+                if (file_exists($controllerFile)) {
                     require_once $controllerFile;
 
                     $controller = $this->getControllerFullName($controller);
@@ -44,18 +45,18 @@ class Router
             }
         }
 
-        if(!$this->routeFound){
-            Response::json(array(),404);
+        if (!$this->routeFound) {
+            Response::json(array(), 404);
         }
-    }
-
-    private function getControllerFullName($controllerName)
-    {
-        return '\\App\\Controllers\\'.$controllerName;
     }
 
     private function getControllerFilePath($controllerName)
     {
-        return __DIR__.'/../app/Controllers/'.$controllerName.'.php';
+        return __DIR__ . '/../app/Controllers/' . $controllerName . '.php';
+    }
+
+    private function getControllerFullName($controllerName)
+    {
+        return '\\App\\Controllers\\' . $controllerName;
     }
 }

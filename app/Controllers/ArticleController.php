@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\Article;
-use System\Request;
 use System\Response;
 
 class ArticleController
@@ -28,12 +28,12 @@ class ArticleController
 
     public function update($id)
     {
-        echo 'update '.$id;
+        echo 'update ' . $id;
     }
 
     public function destroy($id)
     {
-        echo 'destroy '.$id;
+        echo 'destroy ' . $id;
     }
 
     public function destroyAll()
