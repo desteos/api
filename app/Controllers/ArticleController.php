@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\Article;
-use System\Request;
 use System\Response;
 
 class ArticleController
@@ -34,10 +34,5 @@ class ArticleController
     public function destroy($id)
     {
         echo 'destroy '.$id;
-    }
-
-    public function destroyAll()
-    {
-        echo 'destroy all';
     }
 }

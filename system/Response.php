@@ -4,7 +4,7 @@ namespace System;
 
 class Response
 {
-    public static function json($data, int $code = 200):void
+    public static function json($data, int $code = 200): void
     {
 //        $response = [
 //            'data' => $data,

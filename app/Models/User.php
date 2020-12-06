@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Models;
 
 use System\DB;
 
 class User
 {
-    public static function create($input):bool
+    public static function create($input): bool
     {
         $password = $input['password'];
         $input['password'] = password_hash($password, PASSWORD_BCRYPT);
@@ -17,13 +18,13 @@ class User
 
         return $query->execute([
             ':first_name' => $input['first_name'],
-            ':last_name'  => $input['last_name'],
-            ':password'   => $input['password'],
-            ':email'      => $input['email']
+            ':last_name' => $input['last_name'],
+            ':password' => $input['password'],
+            ':email' => $input['email']
         ]);
     }
 
-    public static function checkCredentials($input):bool
+    public static function checkCredentials($input): bool
     {
         $query = DB::prepare('SELECT password FROM users WHERE email = :email');
 
@@ -31,7 +32,7 @@ class User
 
         $user = $query->fetch();
 
-        if(empty($user)){
+        if (empty($user)) {
             return false;
         }
 

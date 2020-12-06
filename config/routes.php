@@ -7,10 +7,10 @@ return [
     'PUT|articles/([0-9]+)' => 'ArticleController/update/$1',
     'POST|articles' => 'ArticleController/store',
     'DELETE|articles/([0-9]+)' => 'ArticleController/destroy/$1',
-    'DELETE|articles' => 'ArticleController/destroyAll',
 
     'POST|users' => 'UserController/store',
 
     'POST|token' => 'AuthController/login',
 //    'DELETE|token' => 'AuthController/logout',
+
 ];

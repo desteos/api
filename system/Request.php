@@ -1,8 +1,6 @@
 <?php
 
-
 namespace System;
-
 
 class Request
 {
