@@ -33,7 +33,7 @@ class Model
         }
 
         $query = DB::prepare('INSERT INTO '.static::$table.' ('.implode(",", array_keys($input)).') 
-                              VALUES ('.implode(",", array_keys($preparedInput)).')');
+                              VALUES ('.implode(",", array_keys($preparedInput)).');');
 
         return $query->execute($preparedInput);
     }
@@ -48,7 +48,7 @@ class Model
             $params[] = $fieldName.'=:'.$fieldName;
         }
 
-        $query = DB::prepare('UPDATE '.static::$table.' SET '.implode(",", $params).' WHERE id=:id');
+        $query = DB::prepare('UPDATE '.static::$table.' SET '.implode(",", $params).' WHERE id=:id;');
 
         $preparedInput[':id'] = $id;
 

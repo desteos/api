@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\Article;
 use App\Models\User;
 use System\Request;
 use System\Response;
