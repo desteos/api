@@ -17,6 +17,17 @@ class User extends Model
         return parent::create($input);
     }
 
+    public static function update(int $id, array $input): bool
+    {
+        if(!empty($input['password'])){
+            $password = $input['password'];
+            $input['password'] = password_hash($password, PASSWORD_BCRYPT);
+            //todo resend email to user with credentials
+        }
+
+        return parent::update($id, $input);
+    }
+
     public static function checkCredentials(array $input): bool
     {
         $query = DB::prepare('SELECT password FROM users WHERE email = :email');

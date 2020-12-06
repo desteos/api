@@ -14,9 +14,9 @@ class UserController
         Response::json(User::create($request->post));
     }
 
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
-        Response::json(User::update($request->post));
+        Response::json(User::update($id, $request->put));
     }
 
     public function show($id)

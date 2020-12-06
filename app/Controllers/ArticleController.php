@@ -10,22 +10,30 @@ class ArticleController extends BaseController
 {
     public function index()
     {
-        Response::json(Article::all());
+        $result = Article::all();
+
+        Response::json($result);
     }
 
     public function show($id)
     {
-        Response::json(Article::find($id));
+        $result = Article::find($id);
+
+        Response::json($result);
     }
 
     public function store(Request $request)
     {
-        Response::json(Article::create($request->post));
+        $result = Article::create($request->post);
+
+        Response::json($result);
     }
 
-    public function update($id)
+    public function update($id, Request $request)
     {
-        echo 'update '.$id;
+        $result = Article::update($id, $request->put);
+
+        Response::json($result);
     }
 
     public function destroy($id)

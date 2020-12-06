@@ -38,10 +38,21 @@ class Model
         return $query->execute($preparedInput);
     }
 
-    public static function update(array $input): bool
+    public static function update(int $id, array $input)
     {
-        //todo
-        return false;
+        $preparedInput = [];
+        $params = [];
+
+        foreach ($input as $fieldName => $value) {
+            $preparedInput[':'.$fieldName] = $value;
+            $params[] = $fieldName.'=:'.$fieldName;
+        }
+
+        $query = DB::prepare('UPDATE '.static::$table.' SET '.implode(",", $params).' WHERE id=:id');
+
+        $preparedInput[':id'] = $id;
+
+        return $query->execute($preparedInput);
     }
 
     public static function delete(int $id): bool
