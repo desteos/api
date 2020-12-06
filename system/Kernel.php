@@ -1,4 +1,5 @@
 <?php
+
 namespace System;
 
 class Kernel
@@ -12,7 +13,7 @@ class Kernel
 
     public function init()
     {
-        $router  = new \System\Router($this->routes);
+        $router = new Router($this->routes);
         $request = new Request();
         $router->handle($request);
     }

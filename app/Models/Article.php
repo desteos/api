@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use System\DB;
@@ -7,17 +8,17 @@ class Article
 {
     public static function all()
     {
-        $articles = DB::query("SELECT * FROM articles;");
+        $query = DB::query("SELECT * FROM articles;");
 
-        return $articles->fetchAll();
+        return $query->fetchAll();
     }
 
     public static function find(int $id)
     {
-        $article = DB::prepare('SELECT * FROM articles WHERE id = :id;');
+        $query = DB::prepare('SELECT * FROM articles WHERE id = :id;');
 
-        $article->execute([':id' => $id]);
+        $query->execute([':id' => $id]);
 
-        return $article->fetch();
+        return $query->fetch();
     }
 }

@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\Article;
-use System\Request;
 use System\Response;
 
 class ArticleController
