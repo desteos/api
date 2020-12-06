@@ -3,27 +3,24 @@
 namespace App\Controllers;
 
 use App\Models\Article;
+use System\Request;
 use System\Response;
 
-class ArticleController
+class ArticleController extends BaseController
 {
     public function index()
     {
-        $result = Article::all();
-
-        Response::json($result);
+        Response::json(Article::all());
     }
 
     public function show($id)
     {
-        $result = Article::find($id);
-
-        Response::json($result);
+        Response::json(Article::find($id));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        echo 'store';
+        Response::json(Article::create($request->post));
     }
 
     public function update($id)

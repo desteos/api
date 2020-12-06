@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Helpers\AuthHelper;
 use App\Models\User;
 use System\Request;
 use System\Response;
@@ -11,8 +12,10 @@ class AuthController
     public function login(Request $request)
     {
         if (User::checkCredentials($request->post)) {
+            setcookie('_token', AuthHelper::generateRefreshToken());
+
             Response::json([
-                'accessToken' => 'uin54qp98wrhuinj2q90ewh8p9ruib' //todo auth
+                'accessToken' => AuthHelper::generateAccessToken()
             ]);
         }
 
@@ -21,6 +24,8 @@ class AuthController
 
     public function logout()
     {
-        echo 'logout';
+        //remove tokens
+
+        Response::json([], 200);
     }
 }

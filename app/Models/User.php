@@ -4,16 +4,9 @@ namespace App\Models;
 
 use System\DB;
 
-class User
+class User extends Model
 {
-    public static function find(int $id)
-    {
-        $query = DB::prepare('SELECT * FROM users WHERE id = :id;');
-
-        $query->execute([':id' => $id]);
-
-        return $query->fetch();
-    }
+    public static $table = 'users';
 
     public static function create(array $input): bool
     {
@@ -21,22 +14,7 @@ class User
         $input['password'] = password_hash($password, PASSWORD_BCRYPT);
 
         //todo send email to user with credentials
-
-        $query = DB::prepare('INSERT INTO users (first_name, last_name, email, password) 
-                              VALUES (:first_name, :last_name, :email, :password)');
-
-        return $query->execute([
-            ':first_name' => $input['first_name'],
-            ':last_name' => $input['last_name'],
-            ':password' => $input['password'],
-            ':email' => $input['email']
-        ]);
-    }
-
-    public static function update(array $input): bool
-    {
-        //todo
-        return false;
+        return parent::create($input);
     }
 
     public static function checkCredentials(array $input): bool
