@@ -15,5 +15,10 @@ class Request
         $this->uri = trim($_SERVER['REQUEST_URI'], '/');
         $this->post = $_POST;
         $this->get = $_GET;
+
+        //trim query
+        if($queryPosition = strpos($this->uri, '?')){
+            $this->uri = substr($this->uri, 0, $queryPosition);
+        }
     }
 }

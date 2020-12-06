@@ -6,7 +6,16 @@ use System\DB;
 
 class User
 {
-    public static function create($input): bool
+    public static function find(int $id)
+    {
+        $query = DB::prepare('SELECT * FROM users WHERE id = :id;');
+
+        $query->execute([':id' => $id]);
+
+        return $query->fetch();
+    }
+
+    public static function create(array $input): bool
     {
         $password = $input['password'];
         $input['password'] = password_hash($password, PASSWORD_BCRYPT);
@@ -24,7 +33,13 @@ class User
         ]);
     }
 
-    public static function checkCredentials($input): bool
+    public static function update(array $input): bool
+    {
+        //todo
+        return false;
+    }
+
+    public static function checkCredentials(array $input): bool
     {
         $query = DB::prepare('SELECT password FROM users WHERE email = :email');
 
