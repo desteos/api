@@ -11,6 +11,4 @@ return [
     'POST|articles' => 'ArticleController/store',
 
     'DELETE|articles/([0-9]+)' => 'ArticleController/destroy/$1',
-
-    'DELETE|articles' => 'ArticleController/destroyAll',
 ];

@@ -35,9 +35,4 @@ class ArticleController
     {
         echo 'destroy '.$id;
     }
-
-    public function destroyAll()
-    {
-        echo 'destroy all';
-    }
 }
