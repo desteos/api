@@ -7,7 +7,7 @@ use App\Models\User;
 use System\Request;
 use System\Response;
 
-class UserController
+class UserController extends BaseController
 {
     public function store(Request $request)
     {
@@ -21,7 +21,7 @@ class UserController
 
     public function show($id)
     {
-        //todo role permission check
+        //todo role permission check in BaseController
         $result = User::find($id);
 
         Response::json($result);
