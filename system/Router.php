@@ -2,6 +2,8 @@
 
 namespace System;
 
+use App\Helpers\AuthHelper;
+
 class Router
 {
     private $routes;
@@ -35,7 +37,7 @@ class Router
 
                     $controller = $this->getControllerFullName($controller);
 
-                    $instance = new $controller;
+                    $instance = new $controller();
                     $instance->$action(...$params);
 
                     $this->routeFound = true;
