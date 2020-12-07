@@ -6,21 +6,26 @@ class Request
 {
     public $uri;
     public $method;
-    public $put;
+    public $headers;
+    public $user_agent;
     public $post;
+    public $put;
     public $get;
+    public $ip;
 
     public function __construct()
     {
+        $this->headers = apache_request_headers();
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->uri = trim($_SERVER['REQUEST_URI'], '/');
         $this->post = $_POST;
         $this->get = $_GET;
+        $this->ip = $_SERVER['REMOTE_ADDR'];
+        $this->user_agent = $_SERVER['HTTP_USER_AGENT'];
 
         //todo refactor
-        $correctMimeType = true; //application/x-www-form-urlencoded
+        $correctMimeType = $this->headers['Content-Type'] === 'application/x-www-form-urlencoded';
 
-        //need add mime type without save php://input to tmp file
         if($this->method === 'PUT' && $correctMimeType){
             parse_str(file_get_contents('php://input'), $this->put);
         }

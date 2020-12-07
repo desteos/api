@@ -2,10 +2,14 @@
     "name": "kesteos/mvc",
     "require": {
       "ext-pdo": "*",
-      "ext-json": "*"
+      "ext-json": "*",
+      "ext-apache": "*",
+      "ext-openssl": "*"
     },
-
     "autoload": {
+        "files": [
+            "app/helpers.php"
+        ],
         "psr-4": {
             "App\\": "app/",
             "System\\": "system/"

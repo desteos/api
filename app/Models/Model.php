@@ -38,7 +38,7 @@ class Model
         return $query->execute($preparedInput);
     }
 
-    public static function update(int $id, array $input)
+    public static function update($id, array $input)
     {
         $preparedInput = [];
         $params = [];

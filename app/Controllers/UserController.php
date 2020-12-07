@@ -21,8 +21,7 @@ class UserController extends BaseController
     public function show($id)
     {
         //todo role permission check in BaseController
-        $result = User::find($id);
 
-        Response::json($result);
+        Response::json(User::find($id));
     }
 }

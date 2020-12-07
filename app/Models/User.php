@@ -28,18 +28,18 @@ class User extends Model
         return parent::update($id, $input);
     }
 
-    public static function checkCredentials(array $input): bool
+    public static function checkCredentials(array $input): ?int
     {
-        $query = DB::prepare('SELECT password FROM users WHERE email = :email');
+        $query = DB::prepare('SELECT id, password FROM users WHERE email = :email');
 
         $query->execute([':email' => $input['email']]);
 
         $user = $query->fetch();
 
         if (empty($user)) {
-            return false;
+            return null;
         }
 
-        return password_verify($input['password'], $user['password']);
+        return password_verify($input['password'], $user['password']) ? $user['id'] : null;
     }
 }
