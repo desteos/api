@@ -6,7 +6,7 @@ use System\Response;
 
 class AuthHelper
 {
-    private static $secret = '7c32d31dbdd39f2111da0b1dea59e94f3ed715fd8cdf0ca3ecf354ca1a2e3e30'; //todo in config
+    private static $secret = ''; //todo in config
 
     public static function getAccessTokenFromHeader(): ?string
     {
