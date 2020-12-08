@@ -17,7 +17,7 @@ class User extends Model
         return parent::create($input);
     }
 
-    public static function update(int $id, array $input): bool
+    public static function update($id, array $input): bool
     {
         if(!empty($input['password'])){
             $password = $input['password'];

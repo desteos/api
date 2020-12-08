@@ -13,4 +13,5 @@ return [
 
     'POST|api/auth/login' => 'AuthController/login',
     'POST|api/auth/logout' => 'AuthController/logout',
+    'POST|api/auth/refresh-tokens' => 'AuthController/refreshTokens',
 ];

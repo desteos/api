@@ -15,7 +15,7 @@ class Model
         return $query->fetchAll();
     }
 
-    public static function find(int $id)
+    public static function find($id)
     {
         $query = DB::prepare('SELECT * FROM '.static::$table.' WHERE id = :id;');
 
