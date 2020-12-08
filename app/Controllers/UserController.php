@@ -20,7 +20,7 @@ class UserController extends BaseController
 
     public function show($id)
     {
-        //todo role permission check in BaseController
+        //todo role permission check
 
         Response::json(User::find($id));
     }

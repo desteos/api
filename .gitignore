@@ -1,6 +1,7 @@
 .idea
 /vendor/
 /config/db.php
+/config/app.php
 /config/mongo_db.php
 /node_modules/
 /.run/
