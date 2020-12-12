@@ -29,9 +29,7 @@ class AuthController
 
             AuthHelper::setRefreshToken($refreshToken);
 
-            Response::json([
-                'accessToken' => $accessToken
-            ]);
+            Response::json(['accessToken' => $accessToken]);
         }
 
         Response::json([], 422); //todo general error response with messages
@@ -41,7 +39,7 @@ class AuthController
     {
         $token = $_COOKIE['token'];
 
-        if(isset($token)){
+        if (isset($token)) {
             RefreshToken::update(AuthHelper::encodedToken($token), ['active' => 0]);
 
             setcookie('token', null);
@@ -58,7 +56,7 @@ class AuthController
 
         $storedToken = RefreshToken::find(AuthHelper::encodedToken($token));
 
-        if(empty($storedToken)){
+        if (empty($storedToken)) {
             $this->dropTokens();
         }
 
@@ -66,7 +64,7 @@ class AuthController
         $tokenInactive = $storedToken['active'] === 0;
         $userAgentChanged = $storedToken['user_agent'] !== $request->user_agent; //todo fingerprint in future
 
-        if($tokenExpired || $tokenInactive || $userAgentChanged){
+        if ($tokenExpired || $tokenInactive || $userAgentChanged) {
             $this->dropTokens();
         }
 
