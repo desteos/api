@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Helpers\AuthHelper;
-use System\Response;
 
 class BaseController
 {
@@ -13,15 +12,15 @@ class BaseController
         $accessToken = AuthHelper::getAccessTokenFromHeader();
 
         if (is_null($accessToken) || !AuthHelper::isValidToken($accessToken)) {
-            Response::json([
+            apiResponse(data: [
                 'errors' => ['invalid-token']
-            ], 401);
+            ], code: 401);
         }
 
         if (AuthHelper::tokenExpired($accessToken)) {
-            Response::json([
+            apiResponse(data: [
                 'errors' => ['token-expired']
-            ], 401);
+            ], code: 401);
         }
     }
 }

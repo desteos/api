@@ -12,32 +12,32 @@ class ArticleController extends BaseController
     {
         $result = Article::all();
 
-        Response::json($result);
+        apiResponse($result);
     }
 
     public function show($id)
     {
         $result = Article::find($id);
 
-        Response::json($result);
+        apiResponse($result);
     }
 
     public function store(Request $request)
     {
         $result = Article::create($request->post);
 
-        Response::json($result);
+        apiResponse($result);
     }
 
     public function update($id, Request $request)
     {
         $result = Article::update($id, $request->put);
 
-        Response::json($result);
+        apiResponse($result);
     }
 
     public function destroy($id)
     {
-        echo 'destroy '.$id;
+        apiResponse(['destroy '.$id]);
     }
 }

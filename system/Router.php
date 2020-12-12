@@ -48,7 +48,7 @@ class Router
         }
 
         if (!$this->routeFound) {
-            Response::json(array(), 404);
+            apiResponse(code: 404);
         }
     }
 

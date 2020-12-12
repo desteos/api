@@ -6,7 +6,6 @@ use App\Helpers\AuthHelper;
 use App\Models\RefreshToken;
 use App\Models\User;
 use System\Request;
-use System\Response;
 
 class AuthController
 {
@@ -29,10 +28,10 @@ class AuthController
 
             AuthHelper::setRefreshToken($refreshToken);
 
-            Response::json(['accessToken' => $accessToken]);
+            apiResponse(data: ['accessToken' => $accessToken]);
         }
 
-        Response::json([], 422); //todo general error response with messages
+        apiResponse(code: 422); //todo general error response with messages
     }
 
     public function logout()
@@ -45,9 +44,7 @@ class AuthController
             setcookie('token', null);
         }
 
-        Response::json([
-            'accessToken' => null
-        ], 200);
+        apiResponse(data: ['accessToken' => null]);
     }
 
     public function refreshTokens(Request $request)//todo refactor
@@ -79,18 +76,16 @@ class AuthController
 
         AuthHelper::setRefreshToken($refreshToken);
 
-        Response::json([
-            'accessToken' => $accessToken
-        ]);
+        apiResponse(data: ['accessToken' => $accessToken]);
     }
 
     private function dropTokens()
     {
         setcookie('token', null);
 
-        Response::json([
+        apiResponse(data: [
             'errors' => ['token-error'],
             'accessToken' => null
-        ], 401);
+        ], code: 401);
     }
 }

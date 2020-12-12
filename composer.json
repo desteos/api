@@ -1,7 +1,8 @@
 {
-    "name": "kesteos/mvc",
+    "name": "desteos/mvc",
     "require": {
       "ext-pdo": "*",
+      "ext-json": "*",
       "ext-openssl": "*"
     },
     "autoload": {
@@ -18,5 +19,8 @@
             "Tests\\": "tests/"
         }
     },
-    "require-dev": {}
+    "require-dev": {
+        "phpunit/phpunit": "^9.4",
+        "mockery/mockery": "^1.4"
+    }
 }
