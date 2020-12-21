@@ -2,8 +2,6 @@
 
 namespace System;
 
-use App\Helpers\AuthHelper;
-
 class Router
 {
     private $routes;
@@ -21,6 +19,9 @@ class Router
             list($method, $uriPattern) = explode('|', $route, 2);
 
             if (preg_match("~^$uriPattern\z~", $request->uri) && $request->method === $method) {
+                list($middlewares, $endpoint) = explode('|', $endpoint);
+                $middlewares = explode(',', $middlewares);//todo refactor
+
                 $endpoint = preg_replace("~$uriPattern~", $endpoint, $request->uri);
                 $parts = explode('/', $endpoint);
 
@@ -33,6 +34,10 @@ class Router
                 $controllerFile = $this->getControllerFilePath($controller);
 
                 if (file_exists($controllerFile)) {
+                    foreach ($middlewares as $middleware) {
+                        $this->runMiddleware($middleware);
+                    }
+
                     require_once $controllerFile;
 
                     $controller = $this->getControllerFullName($controller);
@@ -52,9 +57,36 @@ class Router
         }
     }
 
+    private function runMiddleware(string $middleware)
+    {
+        if(empty($middleware)){
+            return false;
+        }
+
+        $middlewareFile = $this->getMiddlewareFilePath($middleware);
+
+        if (file_exists($middlewareFile)) {
+            require_once $middlewareFile;
+
+            $middleware = $this->getMiddlewareFullName($middleware);
+
+            new $middleware();
+        }
+    }
+//todo refactor
+    private function getMiddlewareFilePath($middlewareName): string
+    {
+        return __DIR__.'/../app/Middlewares/'.$middlewareName.'.php';
+    }
+
     private function getControllerFilePath($controllerName): string
     {
         return __DIR__.'/../app/Controllers/'.$controllerName.'.php';
+    }
+
+    private function getMiddlewareFullName($middlewareName): string
+    {
+        return '\\App\\Middlewares\\'.$middlewareName;
     }
 
     private function getControllerFullName($controllerName): string

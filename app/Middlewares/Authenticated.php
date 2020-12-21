@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Middlewares;
 
 use App\Helpers\AuthHelper;
 
-class BaseController
+class Authenticated
 {
     public function __construct()
     {
-        //auth middleware in future
         $accessToken = AuthHelper::getAccessTokenFromHeader();
 
         if (is_null($accessToken) || !AuthHelper::isValidToken($accessToken)) {

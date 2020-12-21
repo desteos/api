@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\Article;
 use System\Request;
 
-class ArticleController extends BaseController
+class ArticleController
 {
     public function index()
     {
