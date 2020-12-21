@@ -2,12 +2,8 @@
 
 namespace App\Helpers;
 
-use System\Response;
-
 class AuthHelper
 {
-    private static $secret = ''; //todo in config
-
     public static function getAccessTokenFromHeader(): ?string
     {
         if ($token = $_SERVER['HTTP_AUTHORIZATION'] ?? false) {
@@ -40,7 +36,7 @@ class AuthHelper
 
         $encodedHeader = base64UrlEncode($header);
         $encodedPayload = base64UrlEncode($payload);
-        $signature = hash_hmac('sha256', $encodedHeader.".".$encodedPayload, self::$secret, true);
+        $signature = hash_hmac('sha256', $encodedHeader.".".$encodedPayload, config('app')['secret'], true);
         $base64UrlSignature = base64UrlEncode($signature);
 
         return $base64UrlSignature === $signatureProvided;
@@ -61,7 +57,7 @@ class AuthHelper
         $base64UrlPayload = base64UrlEncode($payload);
 
         $signature = hash_hmac('sha256', $base64UrlHeader.".".$base64UrlPayload,
-            self::$secret, true);
+            config('app')['secret'], true);
 
         $base64UrlSignature = base64UrlEncode($signature);
 
@@ -76,15 +72,14 @@ class AuthHelper
 
     public static function encodedToken(string $token): string
     {
-        return hash_hmac('sha256', $token, self::$secret);
+        return hash_hmac('sha256', $token, config('app')['secret']);
     }
 
     public static function setRefreshToken(string $refreshToken): void
     {
         setcookie('token', $refreshToken, [
             'path' => '/api/auth',
-//            'domain' => config('app')['url'],
-            'domain' => 'rest.test',//todo in config
+            'domain' => config('app')['url'],
             'expires' => strtotime('+1 day'),
             'httponly' => true,
             'SameSite' => 'Strict',

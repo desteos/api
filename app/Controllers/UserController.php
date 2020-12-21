@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\User;
 use System\Request;
-use System\Response;
 
 class UserController
 {
