@@ -1,3 +1,3 @@
 
 
-Simple router + MVC skeleton (without View layer)
+Simple API skeleton
