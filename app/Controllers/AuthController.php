@@ -4,88 +4,44 @@ namespace App\Controllers;
 
 use App\Helpers\AuthHelper;
 use App\Models\RefreshToken;
-use App\Models\User;
+use App\Services\AuthService;
 use System\Request;
 
 class AuthController
 {
     public function login(Request $request)
     {
-        if ($userId = User::checkCredentials($request->post)) {
-            $accessToken = AuthHelper::generateAccessToken($userId);
-            $refreshToken = AuthHelper::generateRefreshToken();
-
-            //todo check for refresh sessions(logged devices) count
-
-            RefreshToken::create([
-                'id' => AuthHelper::encodedToken($refreshToken),
-                'user_id' => $userId,
-                'expires_at' => date('Y-m-d H:i:s', strtotime('+1 day')),
-                'ip' => $request->ip,
-                'user_agent' => $request->user_agent, //todo add fingerprint
-                'active' => 1
-            ]);
-
-            AuthHelper::setRefreshToken($refreshToken);
-
+        if($accessToken = AuthService::login($request)){
             apiResponse(data: ['accessToken' => $accessToken]);
         }
 
-        apiResponse(code: 422); //todo general error response with messages
+        apiResponse(data: [
+            'errors' => ['bad-credentials']
+        ], code: 422);
     }
 
     public function logout()
     {
-        $token = $_COOKIE['token'];
-
-        if (isset($token)) {
-            RefreshToken::update(AuthHelper::encodedToken($token), ['active' => 0]);
-
-            setcookie('token', null);
-        }
+        AuthService::forgetToken();
 
         apiResponse(data: ['accessToken' => null]);
     }
 
-    public function refreshTokens(Request $request)//todo refactor
+    public function refreshTokens(Request $request)
     {
-        $token = $_COOKIE['token'];
+        $token = RefreshToken::find(AuthHelper::encodedToken($_COOKIE['token']));
 
-        $storedToken = RefreshToken::find(AuthHelper::encodedToken($token));
+        if (empty($token) || !AuthService::validateToken($token, $request->user_agent)) {
+            setcookie('token', null);
 
-        if (empty($storedToken)) {
-            $this->dropTokens();
+            apiResponse(data: [
+                'errors' => ['token-error'],
+                'accessToken' => null
+            ], code: 401);
         }
 
-        $tokenExpired = strtotime($storedToken['expires_at']) < strtotime('now');
-        $tokenInactive = $storedToken['active'] === 0;
-        $userAgentChanged = $storedToken['user_agent'] !== $request->user_agent; //todo fingerprint in future
-
-        if ($tokenExpired || $tokenInactive || $userAgentChanged) {
-            $this->dropTokens();
-        }
-
-        // if all good
-        $accessToken = AuthHelper::generateAccessToken($storedToken['user_id']);
-        $refreshToken = AuthHelper::generateRefreshToken();
-
-        RefreshToken::update($storedToken['id'], [
-            'id' => AuthHelper::encodedToken($refreshToken),
-            'expires_at' => date('Y-m-d H:i:s', strtotime('+1 day')),
-        ]);
-
-        AuthHelper::setRefreshToken($refreshToken);
+        $accessToken = AuthService::refreshTokenPair($token);
 
         apiResponse(data: ['accessToken' => $accessToken]);
-    }
-
-    private function dropTokens()
-    {
-        setcookie('token', null);
-
-        apiResponse(data: [
-            'errors' => ['token-error'],
-            'accessToken' => null
-        ], code: 401);
     }
 }
