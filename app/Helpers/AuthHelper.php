@@ -22,7 +22,7 @@ class AuthHelper
         return json_decode($payload)->exp < strtotime('now');
     }
 
-    public static function isValidToken(string $accessToken): bool
+    public static function validateAccessToken(string $accessToken): bool
     {
         $tokenParts = explode('.', $accessToken);
 

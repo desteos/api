@@ -10,7 +10,7 @@ class Authenticated
     {
         $accessToken = AuthHelper::getAccessTokenFromHeader();
 
-        if (is_null($accessToken) || !AuthHelper::isValidToken($accessToken)) {
+        if (is_null($accessToken) || !AuthHelper::validateAccessToken($accessToken)) {
             apiResponse(data: [
                 'errors' => ['invalid-token']
             ], code: 401);
