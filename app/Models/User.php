@@ -19,7 +19,7 @@ class User extends Model
 
     public static function update($id, array $input): bool
     {
-        if(!empty($input['password'])){
+        if (!empty($input['password'])) {
             $password = $input['password'];
             $input['password'] = password_hash($password, PASSWORD_BCRYPT);
             //todo resend email to user with credentials

@@ -11,7 +11,7 @@ class AuthController
 {
     public function login(Request $request)
     {
-        if($accessToken = AuthService::login($request)){
+        if ($accessToken = AuthService::login($request)) {
             apiResponse(data: ['accessToken' => $accessToken]);
         }
 

@@ -1,18 +1,46 @@
 <?php
-//'request_method|uri_pattern' => 'middleware1,middleware2|controller/method_to_call/...params'
-// controller name must start with | symbol
+//'request_method|uri_pattern' => 'controller/method_to_call/...params'
 
 return [
-    'GET|api/articles/([0-9]+)' => '|ArticleController/show/$1',
-    'GET|api/articles' => '|ArticleController/index',
-    'PUT|api/articles/([0-9]+)' => 'Authenticated|ArticleController/update/$1',
-    'POST|api/articles' => 'Authenticated|ArticleController/store',
-    'DELETE|api/articles/([0-9]+)' => 'Authenticated|ArticleController/destroy/$1',
+    /* Articles */
+    'GET|api/articles/([0-9]+)' => [
+        'action' => 'ArticleController/show/$1'
+    ],
+    'GET|api/articles' => [
+        'action' => 'ArticleController/index'
+    ],
+    'PUT|api/articles/([0-9]+)' => [
+        'action' => 'ArticleController/update/$1',
+        'middlewares' => ['Authenticated']
+    ],
+    'POST|api/articles' => [
+        'action' => 'ArticleController/store',
+        'middlewares' => ['Authenticated']
+    ],
+    'DELETE|api/articles/([0-9]+)' => [
+        'action' => 'ArticleController/destroy/$1',
+        'middlewares' => ['Authenticated']
+    ],
 
-    'POST|api/users' => '|UserController/store',
-    'PUT|api/users/([0-9]+)' => 'Authenticated|UserController/update/$1',
+    /* Users */
+    'POST|api/users' => [
+        'action' => 'UserController/store',
+        'middlewares' => ['Authenticated']
+    ],
+    'PUT|api/users/([0-9]+)' => [
+        'action' => 'UserController/update/$1',
+        'middlewares' => ['Authenticated']
+    ],
 
-    'POST|api/auth/login' => '|AuthController/login',
-    'POST|api/auth/logout' => 'Authenticated|AuthController/logout',
-    'POST|api/auth/refresh-tokens' => '|AuthController/refreshTokens',
+    /* Auth */
+    'POST|api/auth/login' => [
+        'action' => 'AuthController/login'
+    ],
+    'POST|api/auth/logout' => [
+        'action' => 'AuthController/logout',
+        'middlewares' => ['Authenticated']
+    ],
+    'POST|api/auth/refresh-tokens' => [
+        'action' => 'AuthController/refreshTokens'
+    ],
 ];

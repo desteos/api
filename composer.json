@@ -1,6 +1,7 @@
 {
     "name": "desteos/mvc",
     "require": {
+        "php": "^8.0",
         "ext-pdo": "*",
         "ext-json": "*",
         "ext-openssl": "*"
@@ -20,5 +21,6 @@
         }
     },
     "require-dev": {
+
     }
 }

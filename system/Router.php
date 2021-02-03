@@ -4,51 +4,44 @@ namespace System;
 
 class Router
 {
-    private $routes;
-    private $routeFound;
-
-    public function __construct(array $routes)
-    {
-        $this->routeFound = false;
-        $this->routes = $routes;
+    public function __construct(
+        public array $routes,
+        public bool $routeFound = false
+    ) {
     }
 
-    public function handle(Request $request)
+    public function handle(Request $request): void
     {
-        foreach ($this->routes as $route => $endpoint) {
+        foreach ($this->routes as $route => $data) {
             list($method, $uriPattern) = explode('|', $route, 2);
 
             if (preg_match("~^$uriPattern\z~", $request->uri) && $request->method === $method) {
-                list($middlewares, $endpoint) = explode('|', $endpoint);
-                $middlewares = explode(',', $middlewares);//todo refactor
-
-                $endpoint = preg_replace("~$uriPattern~", $endpoint, $request->uri);
+                $endpoint = preg_replace("~$uriPattern~", $data['action'], $request->uri);
                 $parts = explode('/', $endpoint);
 
-                $controller = array_shift($parts);
+                $controllerName = array_shift($parts);
                 $action = array_shift($parts);
 
                 $params = $parts;
                 $params[] = $request; //last params will be request
 
-                $controllerFile = $this->getControllerFilePath($controller);
+                $controller = '\\App\\Controllers\\'.$controllerName;
 
-                if (file_exists($controllerFile)) {
-                    foreach ($middlewares as $middleware) {
-                        $this->runMiddleware($middleware);
-                    }
-
-                    require_once $controllerFile;
-
-                    $controller = $this->getControllerFullName($controller);
-
-                    $instance = new $controller();
-                    $instance->$action(...$params);
-
-                    $this->routeFound = true;
-
-                    break;
+                // method_exists func call autoload functions
+                // so if true then we dont need require_once controllers file
+                if (!method_exists($controller, $action)) {
+                    continue;
                 }
+
+                // middlewares runs only if action exists
+                $this->runMiddlewares($data['middlewares'] ?? []);
+
+                $instance = new $controller();
+                $instance->$action(...$params);
+
+                $this->routeFound = true;
+
+                break;
             }
         }
 
@@ -57,40 +50,17 @@ class Router
         }
     }
 
-    private function runMiddleware(string $middleware)
+    private function runMiddlewares(array $middlewares): void
     {
-        if(empty($middleware)){
-            return false;
+        foreach ($middlewares as $middleware) {
+            $middleware = '\\App\\Middlewares\\'.$middleware;
+
+            if (!method_exists($middleware, 'handle')) {
+                continue;
+            }
+
+            $instance = new $middleware();
+            $instance->handle();
         }
-
-        $middlewareFile = $this->getMiddlewareFilePath($middleware);
-
-        if (file_exists($middlewareFile)) {
-            require_once $middlewareFile;
-
-            $middleware = $this->getMiddlewareFullName($middleware);
-
-            new $middleware();
-        }
-    }
-//todo refactor
-    private function getMiddlewareFilePath($middlewareName): string
-    {
-        return __DIR__.'/../app/Middlewares/'.$middlewareName.'.php';
-    }
-
-    private function getControllerFilePath($controllerName): string
-    {
-        return __DIR__.'/../app/Controllers/'.$controllerName.'.php';
-    }
-
-    private function getMiddlewareFullName($middlewareName): string
-    {
-        return '\\App\\Middlewares\\'.$middlewareName;
-    }
-
-    private function getControllerFullName($controllerName): string
-    {
-        return '\\App\\Controllers\\'.$controllerName;
     }
 }

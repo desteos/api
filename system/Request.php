@@ -26,12 +26,12 @@ class Request
         //todo refactor
         $correctMimeType = $this->headers['Content-Type'] === 'application/x-www-form-urlencoded';
 
-        if($this->method === 'PUT' && $correctMimeType){
+        if ($this->method === 'PUT' && $correctMimeType) {
             parse_str(file_get_contents('php://input'), $this->put);
         }
 
         //trim query
-        if($queryPosition = strpos($this->uri, '?')){
+        if ($queryPosition = strpos($this->uri, '?')) {
             $this->uri = substr($this->uri, 0, $queryPosition);
         }
     }

@@ -6,7 +6,7 @@ use App\Helpers\AuthHelper;
 
 class Authenticated
 {
-    public function __construct()
+    public function handle()
     {
         $accessToken = AuthHelper::getAccessTokenFromHeader();
 

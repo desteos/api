@@ -1,7 +1,7 @@
 <?php
 
 if (!function_exists('apiResponse')) {
-    function apiResponse($data = [], int $code = 200){
+    function apiResponse($data = [], int $code = 200) {
         header('Content-Type: application/json');
         http_response_code($code);
         echo json_encode($data);
@@ -13,7 +13,7 @@ if (!function_exists('config')) {
     function config(string $name) {
         static $configs = [];
 
-        if(!isset($configs[$name]) && $configs !== true){
+        if (!isset($configs[$name]) && $configs !== true) {
             $configs[$name] = require_once '../config/'.$name.'.php';
         }
 
