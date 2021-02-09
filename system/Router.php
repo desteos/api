@@ -36,8 +36,7 @@ class Router
                 // middlewares runs only if action exists
                 $this->runMiddlewares($data['middlewares'] ?? []);
 
-                $instance = new $controller();
-                $instance->$action(...$params);
+                $this->execute($controller, $action, $params);
 
                 $this->routeFound = true;
 
@@ -52,15 +51,22 @@ class Router
 
     private function runMiddlewares(array $middlewares): void
     {
+        $action = 'handle';
+
         foreach ($middlewares as $middleware) {
             $middleware = '\\App\\Middlewares\\'.$middleware;
 
-            if (!method_exists($middleware, 'handle')) {
+            if (!method_exists($middleware, $action)) {
                 continue;
             }
 
-            $instance = new $middleware();
-            $instance->handle();
+            $this->execute($middleware, $action);
         }
+    }
+
+    private function execute(string $class, string $method, $params = []): void
+    {
+        $instance = new $class();
+        $instance->$method(...$params);
     }
 }
