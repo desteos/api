@@ -3,27 +3,27 @@
 
 return [
     /* Articles */
-    'GET|api/articles/([0-9]+)' => [
+    'GET|api/v1/articles/([0-9]+)' => [
         'action' => 'ArticleController/show/$1'
     ],
-    'GET|api/articles' => [
+    'GET|api/v1/articles' => [
         'action' => 'ArticleController/index'
     ],
-    'PUT|api/articles/([0-9]+)' => [
+    'PUT|api/v1/articles/([0-9]+)' => [
         'action' => 'ArticleController/update/$1',
         'middlewares' => ['Authenticated']
     ],
-    'POST|api/articles' => [
+    'POST|api/v1/articles' => [
         'action' => 'ArticleController/store',
         'middlewares' => ['Authenticated']
     ],
-    'DELETE|api/articles/([0-9]+)' => [
+    'DELETE|api/v1/articles/([0-9]+)' => [
         'action' => 'ArticleController/destroy/$1',
         'middlewares' => ['Authenticated']
     ],
 
     /* Users */
-    'POST|api/users' => [
+    'POST|api/v1/users' => [
         'action' => 'UserController/store',
         'middlewares' => ['Authenticated']
     ],
@@ -33,14 +33,14 @@ return [
     ],
 
     /* Auth */
-    'POST|api/auth/login' => [
+    'POST|api/v1/auth/login' => [
         'action' => 'AuthController/login'
     ],
-    'POST|api/auth/logout' => [
+    'POST|api/v1/auth/logout' => [
         'action' => 'AuthController/logout',
         'middlewares' => ['Authenticated']
     ],
-    'POST|api/auth/refresh-tokens' => [
+    'POST|api/v1/auth/refresh-tokens' => [
         'action' => 'AuthController/refreshTokens'
     ],
 ];

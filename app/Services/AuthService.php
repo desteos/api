@@ -12,7 +12,7 @@ class AuthService
     public static function login(Request $request): string|false
     {
         if ($userId = User::checkCredentials($request->post)) {
-            $accessToken = AuthHelper::generateAccessToken($userId);
+            $accessToken  = AuthHelper::generateAccessToken($userId);
             $refreshToken = AuthHelper::generateRefreshToken();
 
             //todo check for refresh sessions(logged devices) count
@@ -34,7 +34,7 @@ class AuthService
         return false;
     }
 
-    public static function forgetToken()
+    public static function logout()
     {
         $token = $_COOKIE['token'];
 
@@ -45,19 +45,10 @@ class AuthService
         }
     }
 
-    public static function validateToken($token, string $userAgent): bool
-    {
-        $tokenExpired = strtotime($token['expires_at']) < strtotime('now');
-        $tokenInactive = $token['active'] === 0;
-        $userAgentChanged = $token['user_agent'] !== $userAgent; //todo fingerprint in future
-
-        return ($tokenExpired || $tokenInactive || $userAgentChanged) ? false : true;
-    }
-
     public static function refreshTokenPair($token): string
     {
-        $accessToken = AuthHelper::generateAccessToken($token['user_id']);
         $refreshToken = AuthHelper::generateRefreshToken();
+        $accessToken  = AuthHelper::generateAccessToken($token['user_id']);
 
         RefreshToken::update($token['id'], [
             'id' => AuthHelper::encodedToken($refreshToken),

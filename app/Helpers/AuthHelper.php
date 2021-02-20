@@ -30,16 +30,25 @@ class AuthHelper
             return false;
         }
 
-        $header = base64_decode($tokenParts[0]);
+        $header  = base64_decode($tokenParts[0]);
         $payload = base64_decode($tokenParts[1]);
         $signatureProvided = $tokenParts[2];
 
-        $encodedHeader = base64UrlEncode($header);
+        $encodedHeader  = base64UrlEncode($header);
         $encodedPayload = base64UrlEncode($payload);
         $signature = hash_hmac('sha256', $encodedHeader.".".$encodedPayload, config('app')['secret'], true);
         $base64UrlSignature = base64UrlEncode($signature);
 
         return $base64UrlSignature === $signatureProvided;
+    }
+
+    public static function validateRefreshToken($token, string $userAgent): bool
+    {
+        $tokenExpired = strtotime($token['expires_at']) < strtotime('now');
+        $tokenInactive = $token['active'] === 0;
+        $userAgentChanged = $token['user_agent'] !== $userAgent; //todo fingerprint in future
+
+        return ($tokenExpired || $tokenInactive || $userAgentChanged) ? false : true;
     }
 
     public static function generateAccessToken(int $userId): string
@@ -53,7 +62,7 @@ class AuthHelper
             'exp' => strtotime('+5 minutes')
         ]);
 
-        $base64UrlHeader = base64UrlEncode($header);
+        $base64UrlHeader  = base64UrlEncode($header);
         $base64UrlPayload = base64UrlEncode($payload);
 
         $signature = hash_hmac('sha256', $base64UrlHeader.".".$base64UrlPayload,
@@ -78,7 +87,7 @@ class AuthHelper
     public static function setRefreshToken(string $refreshToken): void
     {
         setcookie('token', $refreshToken, [
-            'path' => '/api/auth',
+            'path' => '/api/v1/auth',
             'domain' => config('app')['url'],
             'expires' => strtotime('+1 day'),
             'httponly' => true,

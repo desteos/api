@@ -22,7 +22,7 @@ class AuthController
 
     public function logout()
     {
-        AuthService::forgetToken();
+        AuthService::logout();
 
         apiResponse(data: ['accessToken' => null]);
     }
@@ -31,7 +31,7 @@ class AuthController
     {
         $token = RefreshToken::find(AuthHelper::encodedToken($_COOKIE['token']));
 
-        if (empty($token) || !AuthService::validateToken($token, $request->user_agent)) {
+        if (empty($token) || !AuthHelper::validateRefreshToken($token, $request->user_agent)) {
             setcookie('token', null);
 
             apiResponse(data: [

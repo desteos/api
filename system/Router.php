@@ -4,11 +4,13 @@ namespace System;
 
 class Router
 {
+    private string $controllerNamespace = '\\App\\Controllers\\';
+    private string $middlewareNamespace = '\\App\\Middlewares\\';
+
     public function __construct(
         public array $routes,
         public bool $routeFound = false
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request): void
     {
@@ -25,7 +27,7 @@ class Router
                 $params = $parts;
                 $params[] = $request; //last params will be request
 
-                $controller = '\\App\\Controllers\\'.$controllerName;
+                $controller = $this->controllerNamespace.$controllerName;
 
                 // method_exists func call autoload functions
                 // so if true then we dont need require_once controllers file
@@ -54,7 +56,7 @@ class Router
         $action = 'handle';
 
         foreach ($middlewares as $middleware) {
-            $middleware = '\\App\\Middlewares\\'.$middleware;
+            $middleware = $this->middlewareNamespace.$middleware;
 
             if (!method_exists($middleware, $action)) {
                 continue;
