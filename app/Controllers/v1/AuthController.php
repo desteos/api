@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\v1;
 
 use App\Helpers\AuthHelper;
 use App\Models\RefreshToken;

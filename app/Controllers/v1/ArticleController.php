@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\v1;
 
 use App\Models\Article;
 use System\Request;
