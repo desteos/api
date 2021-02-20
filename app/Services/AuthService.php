@@ -9,6 +9,11 @@ use System\Request;
 
 class AuthService
 {
+    /**
+     * @param  Request  $request
+     * @return string|false
+     * @throws \Exception
+     */
     public static function login(Request $request): string|false
     {
         if ($userId = User::checkCredentials($request->post)) {
@@ -34,6 +39,9 @@ class AuthService
         return false;
     }
 
+    /**
+     * Update refresh token status and clear it from cookies
+     */
     public static function logout(): void
     {
         $token = $_COOKIE['token'] ?? null;
@@ -45,6 +53,13 @@ class AuthService
         }
     }
 
+    /**
+     * Refresh tokens after access token expired
+     *
+     * @param  array  $token
+     * @return string
+     * @throws \Exception
+     */
     public static function refreshTokenPair(array $token): string
     {
         $refreshToken = AuthHelper::generateRefreshToken();

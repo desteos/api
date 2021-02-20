@@ -5,7 +5,10 @@ namespace App\Helpers;
 class AuthHelper
 {
     /**
+     * Get access token from header
+     *
      * @return string|null
+     * @static
      */
     public static function getAccessTokenFromHeader(): ?string
     {
@@ -17,7 +20,10 @@ class AuthHelper
     }
 
     /**
+     * Check if access token expired
+     *
      * @param  string  $accessToken
+     * @static
      * @return bool
      */
     public static function tokenExpired(string $accessToken): bool
@@ -30,7 +36,10 @@ class AuthHelper
     }
 
     /**
+     * Token signature verification
+     *
      * @param  string  $accessToken
+     * @static
      * @return bool
      */
     public static function validateAccessToken(string $accessToken): bool
@@ -54,8 +63,13 @@ class AuthHelper
     }
 
     /**
+     * Check refresh token on expired date, active status and user agent changes
+     *
+     * @todo make check for fingerprint changes
+     *
      * @param  array  $token
      * @param  string  $userAgent
+     * @static
      * @return bool
      */
     public static function validateRefreshToken(array $token, string $userAgent): bool
@@ -68,6 +82,8 @@ class AuthHelper
     }
 
     /**
+     * Generate JWT token
+     *
      * @param  int  $userId
      * @return string
      */
@@ -94,6 +110,8 @@ class AuthHelper
     }
 
     /**
+     * Generate refresh token
+     *
      * @return string
      * @throws \Exception
      */
@@ -104,6 +122,8 @@ class AuthHelper
     }
 
     /**
+     * Encode token for storing in db
+     *
      * @param  string  $token
      * @return string
      */
@@ -113,6 +133,8 @@ class AuthHelper
     }
 
     /**
+     * Set refresh token in cookie
+     *
      * @param  string  $refreshToken
      */
     public static function setRefreshToken(string $refreshToken): void
