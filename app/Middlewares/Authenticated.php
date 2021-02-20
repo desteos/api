@@ -3,10 +3,11 @@
 namespace App\Middlewares;
 
 use App\Helpers\AuthHelper;
+use System\Contracts\Middleware;
 
-class Authenticated
+class Authenticated implements Middleware
 {
-    public function handle()
+    public function handle(): void
     {
         $accessToken = AuthHelper::getAccessTokenFromHeader();
 
