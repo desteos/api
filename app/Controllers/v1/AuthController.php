@@ -9,6 +9,9 @@ use System\Request;
 
 class AuthController
 {
+    /**
+     * @param  Request  $request
+     */
     public function login(Request $request)
     {
         if ($accessToken = AuthService::login($request)) {
@@ -27,6 +30,9 @@ class AuthController
         apiResponse(data: ['accessToken' => null]);
     }
 
+    /**
+     * @param  Request  $request
+     */
     public function refreshTokens(Request $request)
     {
         $token = RefreshToken::find(AuthHelper::encodedToken($_COOKIE['token']));

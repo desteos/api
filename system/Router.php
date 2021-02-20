@@ -12,6 +12,9 @@ class Router
         public bool $routeFound = false
     ) {}
 
+    /**
+     * @param  Request  $request
+     */
     public function handle(Request $request): void
     {
         foreach ($this->routes as $route => $data) {
@@ -51,6 +54,9 @@ class Router
         }
     }
 
+    /**
+     * @param  array  $middlewares
+     */
     private function runMiddlewares(array $middlewares): void
     {
         $action = 'handle';
@@ -66,6 +72,11 @@ class Router
         }
     }
 
+    /**
+     * @param  string  $class
+     * @param  string  $method
+     * @param  array  $params
+     */
     private function execute(string $class, string $method, $params = []): void
     {
         $instance = new $class();

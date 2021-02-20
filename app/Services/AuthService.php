@@ -34,18 +34,18 @@ class AuthService
         return false;
     }
 
-    public static function logout()
+    public static function logout(): void
     {
-        $token = $_COOKIE['token'];
+        $token = $_COOKIE['token'] ?? null;
 
-        if (isset($token)) {
+        if (!is_null($token)) {
             RefreshToken::update(AuthHelper::encodedToken($token), ['active' => 0]);
 
             setcookie('token', null);
         }
     }
 
-    public static function refreshTokenPair($token): string
+    public static function refreshTokenPair(array $token): string
     {
         $refreshToken = AuthHelper::generateRefreshToken();
         $accessToken  = AuthHelper::generateAccessToken($token['user_id']);

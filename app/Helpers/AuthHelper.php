@@ -4,6 +4,9 @@ namespace App\Helpers;
 
 class AuthHelper
 {
+    /**
+     * @return string|null
+     */
     public static function getAccessTokenFromHeader(): ?string
     {
         if ($token = $_SERVER['HTTP_AUTHORIZATION'] ?? false) {
@@ -13,6 +16,10 @@ class AuthHelper
         return null;
     }
 
+    /**
+     * @param  string  $accessToken
+     * @return bool
+     */
     public static function tokenExpired(string $accessToken): bool
     {
         $tokenParts = explode('.', $accessToken);
@@ -22,6 +29,10 @@ class AuthHelper
         return json_decode($payload)->exp < strtotime('now');
     }
 
+    /**
+     * @param  string  $accessToken
+     * @return bool
+     */
     public static function validateAccessToken(string $accessToken): bool
     {
         $tokenParts = explode('.', $accessToken);
@@ -42,7 +53,12 @@ class AuthHelper
         return $base64UrlSignature === $signatureProvided;
     }
 
-    public static function validateRefreshToken($token, string $userAgent): bool
+    /**
+     * @param  array  $token
+     * @param  string  $userAgent
+     * @return bool
+     */
+    public static function validateRefreshToken(array $token, string $userAgent): bool
     {
         $tokenExpired = strtotime($token['expires_at']) < strtotime('now');
         $tokenInactive = $token['active'] === 0;
@@ -51,6 +67,10 @@ class AuthHelper
         return ($tokenExpired || $tokenInactive || $userAgentChanged) ? false : true;
     }
 
+    /**
+     * @param  int  $userId
+     * @return string
+     */
     public static function generateAccessToken(int $userId): string
     {
         $header = json_encode([
@@ -73,21 +93,32 @@ class AuthHelper
         return $base64UrlHeader.".".$base64UrlPayload.".".$base64UrlSignature;
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public static function generateRefreshToken(): string
     {
         //todo handle exception
         return bin2hex(random_bytes(32));
     }
 
+    /**
+     * @param  string  $token
+     * @return string
+     */
     public static function encodedToken(string $token): string
     {
         return hash_hmac('sha256', $token, config('app')['secret']);
     }
 
+    /**
+     * @param  string  $refreshToken
+     */
     public static function setRefreshToken(string $refreshToken): void
     {
         setcookie('token', $refreshToken, [
-            'path' => '/api/v1/auth',
+            'path' => '/api/v1/auth', //todo api version control
             'domain' => config('app')['url'],
             'expires' => strtotime('+1 day'),
             'httponly' => true,

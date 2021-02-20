@@ -15,6 +15,10 @@ class Model
         return $query->fetchAll();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public static function find($id)
     {
         $query = DB::prepare('SELECT * FROM '.static::$table.' WHERE id = :id;');
@@ -24,6 +28,10 @@ class Model
         return $query->fetch();
     }
 
+    /**
+     * @param  array  $input
+     * @return bool
+     */
     public static function create(array $input): bool
     {
         $preparedInput = [];
@@ -38,6 +46,11 @@ class Model
         return $query->execute($preparedInput);
     }
 
+    /**
+     * @param $id
+     * @param  array  $input
+     * @return mixed
+     */
     public static function update($id, array $input)
     {
         $preparedInput = [];
@@ -55,6 +68,10 @@ class Model
         return $query->execute($preparedInput);
     }
 
+    /**
+     * @param  int  $id
+     * @return bool
+     */
     public static function delete(int $id): bool
     {
         //todo

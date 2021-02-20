@@ -14,6 +14,9 @@ class ArticleController
         apiResponse($result);
     }
 
+    /**
+     * @param $id
+     */
     public function show($id)
     {
         $result = Article::find($id);
@@ -21,6 +24,9 @@ class ArticleController
         apiResponse($result);
     }
 
+    /**
+     * @param  Request  $request
+     */
     public function store(Request $request)
     {
         $result = Article::create($request->post);
@@ -28,6 +34,10 @@ class ArticleController
         apiResponse($result);
     }
 
+    /**
+     * @param $id
+     * @param  Request  $request
+     */
     public function update($id, Request $request)
     {
         $result = Article::update($id, $request->put);
@@ -35,6 +45,9 @@ class ArticleController
         apiResponse($result);
     }
 
+    /**
+     * @param $id
+     */
     public function destroy($id)
     {
         apiResponse(['destroy '.$id]);
